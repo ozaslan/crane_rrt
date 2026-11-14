@@ -83,6 +83,12 @@ private:
     void commandCallback(const std_msgs::msg::String::SharedPtr msg) {
         std::istringstream iss(msg->data);
         std::string line;
+        std::string cmd;
+        std::string pendingArena;
+        bool hasArena = false;
+        bool pendingShowAABB = mShowAABB;
+        bool hasShowAABB = false;
+
         while (std::getline(iss, line)) {
             if (line.empty()) continue;
             auto pos = line.find('=');
@@ -90,15 +96,29 @@ private:
             std::string key = line.substr(0, pos);
             std::string val = line.substr(pos + 1);
 
-            if (key == "arena_file") {
-                loadArenaSpec(val);
+            if (key == "command") {
+                cmd = val;
+            } else if (key == "arena_file") {
+                pendingArena = val;
+                hasArena = true;
             } else if (key == "arena.show_aabb") {
-                bool newShow = (val == "1" || val == "true");
-                if (newShow != mShowAABB) {
-                    mShowAABB = newShow;
-                    clearMarkers();
-                }
+                pendingShowAABB = (val == "1" || val == "true");
+                hasShowAABB = true;
             }
+        }
+
+        const bool allowParamMutation =
+            cmd.empty() || cmd == "reset" || cmd == "apply_and_reset" || cmd == "apply_only";
+        if (!allowParamMutation) {
+            return;
+        }
+
+        if (hasArena) {
+            loadArenaSpec(pendingArena);
+        }
+        if (hasShowAABB && pendingShowAABB != mShowAABB) {
+            mShowAABB = pendingShowAABB;
+            clearMarkers();
         }
     }
 

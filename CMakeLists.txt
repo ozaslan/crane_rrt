@@ -14,7 +14,6 @@ find_package(ament_index_cpp REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(sensor_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(Eigen3 REQUIRED)
@@ -51,14 +50,12 @@ ament_target_dependencies(simulator_node
   rclcpp
   ament_index_cpp
   std_msgs
-  sensor_msgs
   yaml-cpp
 )
 target_link_libraries(simulator_node
   yaml-cpp
   Threads::Threads
   ${cpp_typesupport_target}
-  ${Boost_LIBRARIES}
   ${OpenCV_LIBS}
 )
 
@@ -97,7 +94,6 @@ target_link_libraries(arena_visualizer_node
   yaml-cpp
   Threads::Threads
   ${cpp_typesupport_target}
-  ${Boost_LIBRARIES}
   ${OpenCV_LIBS}
 )
 
@@ -119,7 +115,6 @@ target_link_libraries(rrt_exploration_node
   yaml-cpp
   Threads::Threads
   ${cpp_typesupport_target}
-  ${Boost_LIBRARIES}
   ${OpenCV_LIBS}
 )
 
@@ -139,7 +134,6 @@ target_link_libraries(ecc_benchmark
   yaml-cpp
   Threads::Threads
   ${cpp_typesupport_target}
-  ${Boost_LIBRARIES}
   ${OpenCV_LIBS}
 )
 

@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 #include <rclcpp/rclcpp.hpp>
-#include <sensor_msgs/msg/joy.hpp>
 #include <std_msgs/msg/float64_multi_array.hpp>
 
 #include "crane_rrt/arena/ecc_arenas.hpp"
@@ -73,11 +72,6 @@ public:
             "/gantry_crane/collision_status", 10
         );
 
-        mJoySub = this->create_subscription<sensor_msgs::msg::Joy>(
-            "/joy", 10,
-            std::bind(&SimulatorNode::joyCallback, this, std::placeholders::_1)
-        );
-
         mForceSub = this->create_subscription<std_msgs::msg::Float64MultiArray>(
             "/gantry_force_input", 10,
             std::bind(&SimulatorNode::forceCallback, this, std::placeholders::_1)
@@ -105,14 +99,7 @@ protected:
     rclcpp::Publisher<crane_rrt::msg::GantryCraneState>::SharedPtr mPublisher;
     rclcpp::Publisher<CollisionMsg>::SharedPtr mCollisionPub;
     rclcpp::TimerBase::SharedPtr mTimer;
-    rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr mJoySub;
     rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr mForceSub;
-
-    void joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg) {
-        if (msg->axes.size() >= 2) {
-            mMostRecentInput = Input::FromParts(msg->axes[0], msg->axes[1]);
-        }
-    }
 
     void forceCallback(const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
         if (msg->data.size() >= 2) {

@@ -87,9 +87,9 @@ Run `ecc_benchmark` via `ros2 run crane_rrt ecc_benchmark` (after `source instal
    Writes `results/rk4_convergence.csv`.
 
 3. **Held-Out Hyperparameter Tuning (`seeds 2001..2005`)**:
-   Tunes `w_u` for `M7_ForceHist` and `(δ_bn, δ_s)` for `B4_SST`:
+   Tunes `w_u` for `M7_ForceHist` (selecting by converged count and deterministic explored-node efficiency `N_all`, with single-thread timing tie-break) and `(δ_bn, δ_s)` for `B4_SST`:
    ```bash
-   ros2 run crane_rrt ecc_benchmark --tune --threads 1
+   ros2 run crane_rrt ecc_benchmark --tune
    ```
    Writes `results/tuning_summary.csv`.
 
@@ -97,7 +97,7 @@ Run `ecc_benchmark` via `ros2 run crane_rrt ecc_benchmark` (after `source instal
    ```bash
    ros2 run crane_rrt ecc_benchmark --table2 --threads 2
    ```
-   Writes `results/table2_ablation_baselines.csv` (the 12 iteration-budgeted methods `M1`–`M7_ForceHist` and `B1`–`B3` are strictly deterministic across thread counts, while `B4_SST` and `B4_SST_4D` use a `3.0 s` wall-clock timeout per trial). Individual methods or arenas can also be queried selectively:
+   Writes `results/table2_ablation_baselines.csv`. In the summary table, `N_all`, `VER`, and `DE/VB` are averaged over all 120 runs, whereas `Force` (mean RMS force-transition rate) and `T_succ` are averaged over converged runs. The 12 iteration-budgeted methods (`M1`–`M7_ForceHist`, `B1`–`B3`) are strictly deterministic across thread counts, while `B4_SST` and `B4_SST_4D` use a `3.0 s` wall-clock timeout per trial. Individual methods or arenas can also be queried selectively:
    ```bash
    ros2 run crane_rrt ecc_benchmark --table2 --method M7_ProposedFull --method M7_RandSub --method M7_ForceHist
    ```

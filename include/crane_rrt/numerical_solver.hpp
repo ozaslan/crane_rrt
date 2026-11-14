@@ -192,6 +192,10 @@ private:
         return v;
     }
 
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
     // Integration using Boost.Odeint methods
     void stepBoost(const State& x, const Input& u, double t, double dt, State& x_next, RKMethod method) {
         using namespace boost::numeric::odeint;
@@ -252,6 +256,9 @@ private:
 
         x_next = State::FromVector(fromOdeArray(x_temp), t_end);
     }
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
 
     // Manual implementation of fixed-step RK methods
     void stepManual(const State& x, const Input& u, double t, double dt, State& x_next, RKMethod method) {

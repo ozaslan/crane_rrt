@@ -515,24 +515,26 @@ bool runQuickSmokeTest(const std::vector<ArenaSpec>& arenas, unsigned int num_th
 }
 
 void runHeldOutTuning(const std::vector<ArenaSpec>& arenas,
-                      unsigned int num_threads,
+                      unsigned int /*num_threads*/,
                       const std::string& csv_path)
 {
-    std::cout << "\n=== Held-Out Hyperparameter Tuning (Seeds 2001..2005 x 4 Arenas = 20 Runs) ===" << std::endl;
+    std::cout << "\n=== Held-Out Hyperparameter Tuning (Seeds 2001..2005 x 4 Arenas = 20 Runs, Single-Thread Per Trial) ===" << std::endl;
     const auto mp = makeNominalCraneParams();
     std::ofstream ofs(csv_path);
-    ofs << "study,param_label,succ_out_of_20,mean_t_succ_ms\n";
+    ofs << "study,param_label,succ_out_of_20,mean_nodes_succ,mean_t_succ_ms\n";
 
-    std::cout << "  [1] Tuning force-history weight w_u for M7_ForceHist:" << std::endl;
+    std::cout << "  [1] Tuning force-history weight w_u for M7_ForceHist (20,000-iter / 6,000-node budget):" << std::endl;
     const std::vector<double> wu_grid = {0.02, 0.05, 0.10, 0.15, 0.20};
     double best_wu = 0.05;
     int best_wu_succ = -1;
+    double best_wu_nodes = 1e18;
     double best_wu_time = 1e18;
 
     for (double wu : wu_grid) {
         std::vector<int> succ(20, 0);
+        std::vector<double> nodes(20, 0.0);
         std::vector<double> t_ms(20, 0.0);
-        runParallelTasks(20, num_threads, mp, [&](int idx, const auto& tl_model, const auto& tl_solver, const auto&) {
+        runParallelTasks(20, 1u, mp, [&](int idx, const auto& tl_model, const auto& tl_solver, const auto&) {
             const auto& ar = arenas[static_cast<std::size_t>(idx / 5)];
             auto p = makeBaseRRTParams();
             p.random_seed = static_cast<unsigned int>(2001 + (idx % 5));
@@ -544,29 +546,38 @@ void runHeldOutTuning(const std::vector<ArenaSpec>& arenas,
             Planner planner(tl_model, tl_solver, ar.arena, p);
             const auto res = planner.plan(ar.start, ar.goal);
             if (res.success) {
-                succ[static_cast<std::size_t>(idx)] = 1;
-                t_ms[static_cast<std::size_t>(idx)] = res.planning_time_sec * 1000.0;
+                succ[static_cast<std::size_t>(idx)]  = 1;
+                nodes[static_cast<std::size_t>(idx)] = static_cast<double>(res.tree_size);
+                t_ms[static_cast<std::size_t>(idx)]  = res.planning_time_sec * 1000.0;
             }
         });
         int succ_cnt = 0;
+        double sum_n = 0.0;
         double sum_t = 0.0;
         for (int i = 0; i < 20; ++i) {
             succ_cnt += succ[static_cast<std::size_t>(i)];
+            sum_n    += nodes[static_cast<std::size_t>(i)];
             sum_t    += t_ms[static_cast<std::size_t>(i)];
         }
+        const double mean_n = (succ_cnt > 0) ? (sum_n / succ_cnt) : 99999.0;
         const double mean_t = (succ_cnt > 0) ? (sum_t / succ_cnt) : 9999.0;
         std::cout << "      w_u = " << std::fixed << std::setprecision(2) << wu
-                  << " -> Succ: " << succ_cnt << "/20 | Mean T_succ: " << mean_t << " ms\n";
-        ofs << "M7_ForceHist_wu,w_u=" << wu << "," << succ_cnt << "," << mean_t << "\n";
-        if (succ_cnt > best_wu_succ || (succ_cnt == best_wu_succ && mean_t < best_wu_time)) {
-            best_wu_succ = succ_cnt;
-            best_wu_time = mean_t;
-            best_wu      = wu;
+                  << " -> Succ: " << succ_cnt << "/20 | Mean Nodes: " << std::setprecision(1) << mean_n
+                  << " | Mean T_succ: " << std::setprecision(2) << mean_t << " ms\n";
+        ofs << "M7_ForceHist_wu,w_u=" << std::setprecision(2) << wu << ","
+            << succ_cnt << "," << std::setprecision(2) << mean_n << "," << mean_t << "\n";
+        if (succ_cnt > best_wu_succ ||
+            (succ_cnt == best_wu_succ && (mean_n < best_wu_nodes - 1e-9 ||
+             (std::abs(mean_n - best_wu_nodes) <= 1e-9 && mean_t < best_wu_time)))) {
+            best_wu_succ  = succ_cnt;
+            best_wu_nodes = mean_n;
+            best_wu_time  = mean_t;
+            best_wu       = wu;
         }
     }
     std::cout << "      Selected w_u = " << std::fixed << std::setprecision(2) << best_wu << "\n";
 
-    std::cout << "  [2] Tuning (delta_bn, delta_s) for B4_SST (3.0 s wall-clock budget):" << std::endl;
+    std::cout << "  [2] Tuning (delta_bn, delta_s) for B4_SST (3.0 s wall-clock budget, single-thread per trial):" << std::endl;
     struct Pair { double bn; double s; };
     const std::vector<Pair> sst_grid = {{0.35, 0.15}, {0.45, 0.18}, {0.55, 0.22}, {0.65, 0.25}, {0.80, 0.30}};
     Pair best_sst{0.45, 0.18};
@@ -575,8 +586,9 @@ void runHeldOutTuning(const std::vector<ArenaSpec>& arenas,
 
     for (const auto& gp : sst_grid) {
         std::vector<int> succ(20, 0);
+        std::vector<double> nodes(20, 0.0);
         std::vector<double> t_ms(20, 0.0);
-        runParallelTasks(20, num_threads, mp, [&](int idx, const auto& tl_model, const auto& tl_solver, const auto&) {
+        runParallelTasks(20, 1u, mp, [&](int idx, const auto& tl_model, const auto& tl_solver, const auto&) {
             const auto& ar = arenas[static_cast<std::size_t>(idx / 5)];
             auto p = makeBaseRRTParams();
             p.random_seed = static_cast<unsigned int>(2001 + (idx % 5));
@@ -598,21 +610,26 @@ void runHeldOutTuning(const std::vector<ArenaSpec>& arenas,
             Planner planner(tl_model, tl_solver, ar.arena, p);
             const auto res = planner.plan(ar.start, ar.goal);
             if (res.success) {
-                succ[static_cast<std::size_t>(idx)] = 1;
-                t_ms[static_cast<std::size_t>(idx)] = res.planning_time_sec * 1000.0;
+                succ[static_cast<std::size_t>(idx)]  = 1;
+                nodes[static_cast<std::size_t>(idx)] = static_cast<double>(res.tree_size);
+                t_ms[static_cast<std::size_t>(idx)]  = res.planning_time_sec * 1000.0;
             }
         });
         int succ_cnt = 0;
+        double sum_n = 0.0;
         double sum_t = 0.0;
         for (int i = 0; i < 20; ++i) {
             succ_cnt += succ[static_cast<std::size_t>(i)];
+            sum_n    += nodes[static_cast<std::size_t>(i)];
             sum_t    += t_ms[static_cast<std::size_t>(i)];
         }
+        const double mean_n = (succ_cnt > 0) ? (sum_n / succ_cnt) : 99999.0;
         const double mean_t = (succ_cnt > 0) ? (sum_t / succ_cnt) : 9999.0;
         std::cout << "      (delta_bn=" << std::fixed << std::setprecision(2) << gp.bn
                   << ", delta_s=" << gp.s << ") -> Succ: " << succ_cnt
                   << "/20 | Mean T_succ: " << std::setprecision(1) << mean_t << " ms\n";
-        ofs << "B4_SST_radii,bn=" << gp.bn << "_s=" << gp.s << "," << succ_cnt << "," << mean_t << "\n";
+        ofs << "B4_SST_radii,bn=" << std::setprecision(2) << gp.bn << "_s=" << gp.s << ","
+            << succ_cnt << "," << mean_n << "," << mean_t << "\n";
         if (succ_cnt > best_sst_succ || (succ_cnt == best_sst_succ && mean_t < best_sst_time)) {
             best_sst_succ = succ_cnt;
             best_sst_time = mean_t;
@@ -799,6 +816,7 @@ void runTable2Benchmark(const std::vector<ArenaSpec>& all_arenas,
     std::cout << "\n=== ECC 2027 Table II Ablation & Baseline Benchmark ("
               << methods.size() << " methods x " << arenas.size() << " arenas x "
               << num_seeds << " seeds) ===" << std::endl;
+    std::cout << "  [Aggregation: N_all, VER, DE/VB = mean over all runs; Force (RMS d||u||/dt) and T_succ = mean over converged runs]" << std::endl;
 
     const auto mp = makeNominalCraneParams();
     std::ofstream ofs(csv_path);

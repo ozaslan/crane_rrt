@@ -376,28 +376,33 @@ private:
             }
         }
 
-        if (model_changed && modelParams.isValid()) {
-            mPlanner->getModel()->setParameters(modelParams);
-        }
-        if (solver_changed) {
-            mPlanner->getSolver()->setParameters(solverParams);
-        }
-        if (vis_changed) {
-            clearRRTMarkersInRViz();
-            mVisualizer.setParameters(visParams);
-        }
-        if (newArenaFile != mCurrentArenaFile) {
-            mCurrentArenaFile = newArenaFile;
-            mPlanner->setArena((newArenaFile == "none" || newArenaFile.empty())
-                ? nullptr
-                : loadArena(newArenaFile));
-        }
-        if (dt_changed) {
-            recreateTimer(rrtParams.integration_dt);
-        }
+        const bool allowParamMutation =
+            cmd.empty() || cmd == "reset" || cmd == "apply_and_reset" || cmd == "apply_only";
 
-        startState = State::FromTrolleyPhase(start_x, start_y, 0.0, 0.0);
-        goalState  = State::FromTrolleyPhase(goal_x,  goal_y,  0.0, 0.0);
+        if (allowParamMutation) {
+            if (model_changed && modelParams.isValid()) {
+                mPlanner->getModel()->setParameters(modelParams);
+            }
+            if (solver_changed) {
+                mPlanner->getSolver()->setParameters(solverParams);
+            }
+            if (vis_changed) {
+                clearRRTMarkersInRViz();
+                mVisualizer.setParameters(visParams);
+            }
+            if (newArenaFile != mCurrentArenaFile) {
+                mCurrentArenaFile = newArenaFile;
+                mPlanner->setArena((newArenaFile == "none" || newArenaFile.empty())
+                    ? nullptr
+                    : loadArena(newArenaFile));
+            }
+            if (dt_changed) {
+                recreateTimer(rrtParams.integration_dt);
+            }
+
+            startState = State::FromTrolleyPhase(start_x, start_y, 0.0, 0.0);
+            goalState  = State::FromTrolleyPhase(goal_x,  goal_y,  0.0, 0.0);
+        }
 
         if (cmd == "reset" || cmd == "apply_and_reset") {
             mPlanner->setParameters(rrtParams);
@@ -418,6 +423,8 @@ private:
         } else if (cmd == "restart_playback") {
             mPlaybackIndex = 0;
             mPaused = false;
+            publishStatus();
+        } else if (cmd == "clear_history") {
             publishStatus();
         } else if (cmd == "step_once") {
             mPaused = true;
