@@ -1,4 +1,8 @@
-# crane_rrt
+# CRANE-RRT
+
+Force-Smooth Kinodynamic RRT Planning for Sway-Constrained Three-Dimensional Gantry Cranes
+
+![CRANE-RRT clay letters beneath a 3D gantry crane above a branching RRT exploration tree](images/crane_rrt-banner.png)
 
 ROS 2 simulation, interactive visualization, and standalone benchmark suite for **Force-Smooth Kinodynamic RRT Planning for Sway-Constrained Three-Dimensional Gantry Cranes** (ECC 2027).
 
