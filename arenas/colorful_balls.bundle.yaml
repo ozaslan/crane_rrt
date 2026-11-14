@@ -1,0 +1,27 @@
+bundle:
+  tag: "simple_bundle"
+
+  primitives:
+    - type: "sphere"
+      tag: "red_ball"
+      pose:
+        position: [1.0, 0.0, 0.5]
+        orientation: [0.0, 0.0, 0.0, 1.0]
+      scale: [0.3, 0.3, 0.3]
+      color: [1.0, 0.0, 0.0, 1.0]
+
+    - type: "sphere"
+      tag: "green_ball"
+      pose:
+        position: [-1.0, 0.0, 0.5]
+        orientation: [0.0, 0.0, 0.0, 1.0]
+      scale: [0.4, 0.4, 0.4]
+      color: [0.0, 1.0, 0.0, 1.0]
+
+    - type: "sphere"
+      tag: "blue_ball"
+      pose:
+        position: [0.0, 1.0, 0.5]
+        orientation: [0.0, 0.0, 0.0, 1.0]
+      scale: [0.2, 0.2, 0.2]
+      color: [0.0, 0.0, 1.0, 1.0]

@@ -1,0 +1,11 @@
+arena:
+  name: "arena_from_images"
+  description: "Sample arena combining images and bundles"
+  id: "arena_002"
+
+  # External bundle inclusions with relative transforms
+  bundles:
+    - file: "from_image.bundle.yaml"
+      pose:
+        position: [0.0, 0.0, -1.0]
+        orientation: [0.0, 0.0, 0.707, .707]

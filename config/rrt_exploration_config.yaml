@@ -1,0 +1,88 @@
+/**:
+  ros__parameters:
+    model:
+      m_x: 0.1
+      m_y: 0.1
+      m: 0.1
+      g: 9.81
+      ell: 1.0
+      D_x: 0.05
+      D_y: 0.05
+
+    solver:
+      use_boost: false
+      integration_method: "ClassicalRK4"
+
+    arena_file: "Arena1_ImageIndustrial"
+    ball_radius: 0.12
+    show_aabb: false
+
+    rrt:
+      frame_id: "map"
+      auto_arena_preset: true
+      startup_delay_sec: 2.0
+      start_state: [-3.8, 3.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      goal_state:  [ 3.8, -3.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      x_min: -4.5
+      x_max:  4.5
+      y_min: -4.5
+      y_max:  4.5
+      max_velocity: 2.0
+      max_swing_angle: 0.4363
+      max_force: 0.5
+      min_duration: 0.20
+      max_duration: 0.50
+      enable_force_smoothing: true
+      force_direction_bias: 0.35
+      w_pos: 0.85
+      w_vel: 0.15
+      goal_bias: 0.15
+      min_search_step: 1
+      max_search_step: 15
+      use_equal_budget_random_subset: false
+      force_history_nns_weight: 0.0
+      use_sst_planner: false
+      sst_delta_bn: 0.45
+      sst_delta_s: 0.18
+      num_control_samples: 1
+      use_cell_partition_nns: false
+      cell_grid_radix: 3
+      use_pd_local_steering: false
+      enable_near_goal_braking: true
+      near_goal_radius: 0.85
+      near_goal_zero_force_prob: 0.60
+      enable_soft_corridor: false
+      corridor_half_width: 1.25
+      corridor_penalty_weight: 0.50
+      corridor_sample_prob: 0.88
+      goal_pos_tolerance: 0.35
+      goal_vel_tolerance: 0.55
+      goal_swing_tolerance: 0.22
+      goal_omega_tolerance: 0.55
+      require_goal_velocity_check: true
+      require_goal_swing_check: true
+      integration_dt: 0.02
+      cable_radius: 0.08
+      check_rope_collision: true
+      rope_collision_samples: 10
+      max_iterations: 20000
+      max_nodes: 6000
+      batch_iterations: 20
+      loop_playback: true
+      draw_payload_tree: true
+      random_seed: 1001
+
+    ns: "gantry"
+    frame_id: "map"
+    base_id: 1000
+    draw_trolley_velocity: true
+    draw_ball_velocity: true
+    draw_trolley_history: true
+    draw_ball_history: true
+    trolley_size: 0.20
+    rope_thickness: 0.02
+    arrow_thickness: 0.04
+    history_duration_limit_sec: 30.0
+    history_count_limit: 600
+    refresh_limit: 50.0
+

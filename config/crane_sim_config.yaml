@@ -1,0 +1,38 @@
+/**:
+  ros__parameters:
+    model:
+      m_x: 0.1
+      m_y: 0.1
+      m: 0.1
+      g: 9.81
+      ell: 1.0
+      D_x: 0.05
+      D_y: 0.05
+
+    sim:
+      frequency: 100.0
+      log_state: false
+      initial_state: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+    solver:
+      use_boost: false
+      integration_method: "ClassicalRK4"
+
+    arena_file: "none"
+    ball_radius: 0.12
+    show_aabb: false
+
+    ns: "gantry"
+    frame_id: "map"
+    base_id: 1000
+    draw_trolley_velocity: true
+    draw_ball_velocity: true
+    draw_trolley_history: true
+    draw_ball_history: true
+    trolley_size: 0.20
+    rope_thickness: 0.02
+    arrow_thickness: 0.04
+    history_duration_limit_sec: 20.0
+    history_count_limit: 500
+    refresh_limit: 50.0
+

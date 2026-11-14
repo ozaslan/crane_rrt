@@ -1,0 +1,16 @@
+bundle:
+  tag: "from_image_bundle"
+
+  bundles:
+    - file: "colorful_balls.bundle.yaml"
+
+  from_image:
+    path: "arena_02.png"
+    pixel_size_cm: 0.5
+    min_radius_px: 5.0
+    whiteness_threshold: 100.0
+
+    group_by_component: false          # optional: child bundles for each connected region
+    z_plane: 0.0                      # optional: constant Z for all sphere centers
+    color: [1.0, 0.5, 0.0, 0.3]       # optional: color for all generated primitives
+    tag_prefix: "circle"              # optional: for tagging primitives like "circle_0", ...
