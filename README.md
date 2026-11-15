@@ -12,30 +12,24 @@ This repository provides:
 
 ---
 
-## Simulation & Benchmark Videos
+## Simulation Videos
 
 <p align="center">
-  <strong>1. Industrial Obstacle Field (Arena 1)</strong><br>
   <a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/01_industrial_arena_exploration.mp4">
-    <img src="videos/01_industrial_arena_exploration.gif" alt="Arena 1 industrial obstacle field RRT exploration" width="65%">
-  </a><br>
-  <sub><a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/01_industrial_arena_exploration.mp4">▶ Play 1080p MP4</a> &nbsp;·&nbsp; <a href="videos/01_industrial_arena_exploration.mp4">Repository MP4</a></sub>
+    <img src="videos/01_industrial_arena_exploration.gif" alt="Arena 1 simulation" width="65%">
+  </a>
 </p>
 
 <p align="center">
-  <strong>2. Payload Clutter & Soft Crane Corridor (Arena 4)</strong><br>
   <a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/02_payload_clutter_soft_corridor.mp4">
-    <img src="videos/02_payload_clutter_soft_corridor.gif" alt="Arena 4 payload clutter and soft crane corridor" width="65%">
-  </a><br>
-  <sub><a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/02_payload_clutter_soft_corridor.mp4">▶ Play 1080p MP4</a> &nbsp;·&nbsp; <a href="videos/02_payload_clutter_soft_corridor.mp4">Repository MP4</a></sub>
+    <img src="videos/02_payload_clutter_soft_corridor.gif" alt="Arena 4 simulation" width="65%">
+  </a>
 </p>
 
 <p align="center">
-  <strong>3. Slalom Baseline Comparison & Strict Pillar Yard (Arenas 2 & 3)</strong><br>
   <a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/03_slalom_pillar_ablation_comparison.mp4">
-    <img src="videos/03_slalom_pillar_ablation_comparison.gif" alt="Arenas 2 and 3 slalom comparison and strict terminal arrest" width="65%">
-  </a><br>
-  <sub><a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/03_slalom_pillar_ablation_comparison.mp4">▶ Play 1080p MP4</a> &nbsp;·&nbsp; <a href="videos/03_slalom_pillar_ablation_comparison.mp4">Repository MP4</a></sub>
+    <img src="videos/03_slalom_pillar_ablation_comparison.gif" alt="Arenas 2 and 3 simulation" width="65%">
+  </a>
 </p>
 
 ---
