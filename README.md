@@ -14,45 +14,28 @@ This repository provides:
 
 ## Simulation & Benchmark Videos
 
-All three simulations play automatically inline below and link directly to full-resolution `1920×1080` (`30 fps`, H.264) streams generated from exact C++17 `RRTPlanner` rollouts verified against the 10-sphere cable model at `h_fine = 0.002 s`.
-
-### 1. Industrial Obstacle Field (Arena 1)
-Live 3D and top-down dual-tree exploration, goal lock-in, and real-time rollout across `109` obstacle spheres (`M7_ProposedFull`, `Seed 1001`): `616` nodes (`234.7 ms`), `94.7 DE/VB`, `43.8%` valid extensions, peak swing `24.79° ≤ 25.0°`, mean force rate `1.60 N/s`, and `0` contacts at `h_fine = 0.002 s`.
-
 <p align="center">
+  <strong>1. Industrial Obstacle Field (Arena 1)</strong><br>
   <a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/01_industrial_arena_exploration.mp4">
-    <img src="videos/01_industrial_arena_exploration.gif" alt="Arena 1 industrial obstacle field RRT exploration and rollout" width="100%">
-  </a>
-  <br>
-  <a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/01_industrial_arena_exploration.mp4"><strong>▶ Play 1080p 30fps MP4 in Browser</strong></a>
-  &nbsp;·&nbsp;
-  <a href="videos/01_industrial_arena_exploration.mp4">Repository MP4 (<code>videos/01_industrial_arena_exploration.mp4</code>)</a>
+    <img src="videos/01_industrial_arena_exploration.gif" alt="Arena 1 industrial obstacle field RRT exploration" width="65%">
+  </a><br>
+  <sub><a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/01_industrial_arena_exploration.mp4">▶ Play 1080p MP4</a> &nbsp;·&nbsp; <a href="videos/01_industrial_arena_exploration.mp4">Repository MP4</a></sub>
 </p>
 
-### 2. Payload Clutter & Soft Crane Corridor (Arena 4)
-Synchronized side-elevation (`XZ`) and orthographic top-down (`XY`) views demonstrating unobstructed overhead trolley transit (`z = 0`, `∣d⊥∣ ≤ 1.25 m`) while the suspended payload weaves cleanly around `38` floor spheres (`z_top = -0.71 m`): `663` nodes (`181.2 ms`), `95.6 DE/VB`, peak swing `24.42° ≤ 25.0°`, mean force rate `1.70 N/s`, minimum tension `0.756 N`, and `0` contacts.
-
 <p align="center">
+  <strong>2. Payload Clutter & Soft Crane Corridor (Arena 4)</strong><br>
   <a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/02_payload_clutter_soft_corridor.mp4">
-    <img src="videos/02_payload_clutter_soft_corridor.gif" alt="Arena 4 payload clutter and soft crane corridor rollout" width="100%">
-  </a>
-  <br>
-  <a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/02_payload_clutter_soft_corridor.mp4"><strong>▶ Play 1080p 30fps MP4 in Browser</strong></a>
-  &nbsp;·&nbsp;
-  <a href="videos/02_payload_clutter_soft_corridor.mp4">Repository MP4 (<code>videos/02_payload_clutter_soft_corridor.mp4</code>)</a>
+    <img src="videos/02_payload_clutter_soft_corridor.gif" alt="Arena 4 payload clutter and soft crane corridor" width="65%">
+  </a><br>
+  <sub><a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/02_payload_clutter_soft_corridor.mp4">▶ Play 1080p MP4</a> &nbsp;·&nbsp; <a href="videos/02_payload_clutter_soft_corridor.mp4">Repository MP4</a></sub>
 </p>
 
-### 3. Slalom Baseline Comparison & Strict Pillar Yard (Arenas 2 & 3)
-**Act I (`Arena 2`, `64` spheres, `Seed 1003`):** Synchronized comparison where unsmoothed `B1_LaValleBestK` (`K = 5`) hits the `6000`-node cap (`4178.8 ms`, `6.13 N/s`) while `M7_ProposedFull` converges in `1179` nodes (`202.5 ms`, `1.54 N/s`, `159.5 DE/VB`). **Act II (`Arena 3`, `9` pillars, `r = 0.58 m`, `Seed 1001`):** Under `Strict` terminal quiescence (`θ ≤ 2.0°`, `‖v_load‖ ≤ 0.10 m/s`, `ω ≤ 0.10 rad/s`), `M7` (`1194` nodes, `183.2 ms`) arrests at `θ(T) = 1.21°`, `‖v_load(T)‖ = 0.058 m/s`, and `ω(T) = 0.019 rad/s`.
-
 <p align="center">
+  <strong>3. Slalom Baseline Comparison & Strict Pillar Yard (Arenas 2 & 3)</strong><br>
   <a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/03_slalom_pillar_ablation_comparison.mp4">
-    <img src="videos/03_slalom_pillar_ablation_comparison.gif" alt="Arenas 2 and 3 slalom comparison and strict terminal arrest" width="100%">
-  </a>
-  <br>
-  <a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/03_slalom_pillar_ablation_comparison.mp4"><strong>▶ Play 1080p 30fps MP4 in Browser</strong></a>
-  &nbsp;·&nbsp;
-  <a href="videos/03_slalom_pillar_ablation_comparison.mp4">Repository MP4 (<code>videos/03_slalom_pillar_ablation_comparison.mp4</code>)</a>
+    <img src="videos/03_slalom_pillar_ablation_comparison.gif" alt="Arenas 2 and 3 slalom comparison and strict terminal arrest" width="65%">
+  </a><br>
+  <sub><a href="https://cdn.jsdelivr.net/gh/ozaslan/crane_rrt@main/videos/03_slalom_pillar_ablation_comparison.mp4">▶ Play 1080p MP4</a> &nbsp;·&nbsp; <a href="videos/03_slalom_pillar_ablation_comparison.mp4">Repository MP4</a></sub>
 </p>
 
 ---
